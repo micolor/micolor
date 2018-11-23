@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.micolor.admin.app.dto.SysApiLog;
 import com.micolor.admin.app.mapper.ApiLogMapper;
+import com.micolor.common.utils.tablelist.TableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,8 @@ public class ApiLogService {
         apiLogMapper.insertSelective(log);
     }
 
-    public Map getLogs(Integer pageStart,Integer pageSize){
-        PageHelper.startPage(pageStart, pageSize);
+    public Map getLogs(TableList tableList){
+        PageHelper.startPage(tableList.getStart(), tableList.getLength());
         List<SysApiLog> list = apiLogMapper.selectAll();
         PageInfo<Map> pageInfo = new PageInfo(list);
         Map res = new HashMap();

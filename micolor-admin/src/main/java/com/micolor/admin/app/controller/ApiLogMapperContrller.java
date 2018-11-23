@@ -2,6 +2,8 @@ package com.micolor.admin.app.controller;
 
 import com.micolor.admin.app.service.ApiLogService;
 import com.micolor.common.base.ApiResponse;
+import com.micolor.common.utils.tablelist.Http2TableList;
+import com.micolor.common.utils.tablelist.TableList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -27,15 +29,13 @@ public class ApiLogMapperContrller {
     @Autowired
     ApiLogService apiLogService;
     @ApiOperation(value = "获取系统日志", notes = "获取系统日志")
-    @GetMapping(value = "/api/logs")
+    @GetMapping(value = "/logs")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageStart", value = "当前页数", dataType = "Integer", paramType = "query", defaultValue = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "每页记录数", dataType = "Integer", paramType = "query", defaultValue = "5"),
+            @ApiImplicitParam(name = "dtJson", value = "列表参数", dataType = "String", paramType = "query"),
     })
     public ApiResponse getLogs(HttpServletRequest request) {
-        Integer pageStart = Integer.parseInt(request.getParameter("pageStart"));
-        Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
-        Map info = apiLogService.getLogs(pageStart,pageSize);
+        TableList tableList = Http2TableList.getHttp2TableList(request);
+        Map info = apiLogService.getLogs(tableList);
         return new ApiResponse(info);
     }
 }
